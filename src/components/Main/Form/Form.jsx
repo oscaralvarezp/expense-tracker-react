@@ -47,6 +47,7 @@ const Form = () => {
 
   // Logica para agregar o cancelar una transaction con speechly, efecto se ejecutara cada vez que segment cambie 
   useEffect(() => {
+    // Si existe segmento de voz verifico que tipo y lo asigno al estado del form
     if(segment) {
       if(segment.intent.intent === 'add_expense') {
         setFormData({ ...formData, type: 'Expense' })
@@ -58,19 +59,24 @@ const Form = () => {
         return setFormData(initialState)
       }
       // e = entity
+      // itero el segmento de voz
       segment.entities.forEach((e) => {
         const category = `${e.value.charAt(0)}${e.value.slice(1).toLowerCase()}`
+        // en cada iteracion verifico que el tipo dicho por voz sea correcto y lo asigno a cada campo del form
         switch (e.type) {
+          // asigno el amount por voz 
           case 'amount':
             setFormData({ ...formData, amount: e.value })
             break;
           case 'category':
+            // Verifico si la categoria dicha es correcta de no ser asi le asigno la categoria al tipo correspondiente(Expense o Income) 
              if (incomeCategories.map((iC) => iC.type).includes(category)) {
               setFormData({ ...formData, type: 'Income', category });
             } else if (expenseCategories.map((iC) => iC.type).includes(category)) {
               setFormData({ ...formData, type: 'Expense', category });
             }
             break;
+          // asigno la date dicha por voz
           case 'date':
             setFormData({ ...formData, date: e.value })
             break;
@@ -79,8 +85,8 @@ const Form = () => {
             break;
         }
       })
-
-       if (segment.isFinal && formData.amount && formData.category && formData.type && formData.date) {
+      // cuando todos los campos del form esten agrega la transaccion por voz
+      if (segment.isFinal && formData.amount && formData.category && formData.type && formData.date) {
         addTransaction();
       }
     }
