@@ -4,7 +4,7 @@ App de gastos(expense) y ingresos(income) hecha con React del tutorial [Javascri
 ## Desktop Preview
 ![Desktop Preview](public/desktop-preview.png)
 
-## Desktop Preview
+## Mobile Preview
 ![Mobile Preview](public/mobile-preview.png)
 
 ## Getting Started with Create React App
